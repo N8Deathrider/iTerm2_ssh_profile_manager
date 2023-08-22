@@ -22,11 +22,8 @@ def uuid() -> str:
     return str(uuid4()).split("-")[0]
 
 
-def find_path_to_ssh() -> str:
-    try:
-        check_output(["which", "sssh"], encoding="utf-8").strip()
-    except CalledProcessError:
-        return "ssh"
+def find_path_to_program(program: str) -> str:
+    return check_output(["which", program], encoding="utf-8").strip()
 
 
 class Profiles:
@@ -34,6 +31,7 @@ class Profiles:
     # TODO: write this
     """
     def __init__(self, profiles_file: str | PosixPath):
+        self._ssh_path = find_path_to_program("ssh")
         if isinstance(profiles_file, PosixPath):
             self.profiles_file = profiles_file
         else:
@@ -96,7 +94,7 @@ class Profiles:
         if not log_directory.is_dir():
             raise Exception("Log directory is not a directory ")
 
-        ssh_command = f"/usr/bin/ssh {username}@{destination_ip}"
+        ssh_command = f"{self._ssh_path} {username}@{destination_ip}"
 
         if not description:
             description = f"{name} - {destination_ip}"
