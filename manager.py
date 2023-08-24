@@ -37,10 +37,10 @@ class Profiles:
 
         if self.profiles_file.exists():
             if not self.profiles_file.is_file():
-                raise Exception("The path provided is not a file")
+                raise FileNotFoundError("The path provided is not a file")
 
             if self.profiles_file.suffix != ".json":
-                raise Exception("File is not a JSON file")
+                raise TypeError("File does not end in .json")
 
             with self.profiles_file.open("r") as f:
                 self.data = json.load(f)
