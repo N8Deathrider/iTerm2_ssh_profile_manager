@@ -8,10 +8,9 @@ import json
 
 from pathlib import PosixPath
 
-from subprocess import check_output
-from subprocess import CalledProcessError
-
 from pathlib import Path
+
+from shutil import which
 
 from rich import print
 from rich.prompt import Confirm
@@ -23,12 +22,6 @@ def uuid() -> str:
     return str(uuid4()).split("-")[0]
 
 
-def find_path_to_program(program: str) -> str:
-    try:
-        return check_output(["which", program], encoding="utf-8").strip()
-    except CalledProcessError:
-        return Prompt.ask("Path to ssh")
-
 # TODO: need to add a config file to store stuff like that eventually maybe
 
 
@@ -37,7 +30,7 @@ class Profiles:
     # TODO: write this
     """
     def __init__(self, profiles_file: str | PosixPath):
-        self._ssh_path = find_path_to_program("ssh")
+        self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
         if isinstance(profiles_file, PosixPath):
             self.profiles_file = profiles_file
         else:
