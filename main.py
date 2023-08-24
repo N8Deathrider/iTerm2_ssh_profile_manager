@@ -15,6 +15,7 @@ from pathlib import Path
 
 from rich import print
 from rich.prompt import Confirm
+from rich.prompt import Prompt
 from uuid import uuid4
 
 
@@ -23,7 +24,12 @@ def uuid() -> str:
 
 
 def find_path_to_program(program: str) -> str:
-    return check_output(["which", program], encoding="utf-8").strip()
+    try:
+        return check_output(["which", program], encoding="utf-8").strip()
+    except CalledProcessError:
+        return Prompt.ask("Path to ssh")
+
+# TODO: need to add a config file to store stuff like that eventually maybe
 
 
 class Profiles:
