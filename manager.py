@@ -7,7 +7,6 @@ Email: Nath001c@KelloggsUwU.net
 import json
 
 from pathlib import PosixPath
-
 from pathlib import Path
 
 from shutil import which
@@ -29,9 +28,9 @@ class Profiles:
     """
     # TODO: write this
     """
-    def __init__(self, profiles_file: str | PosixPath):
+    def __init__(self, profiles_file: str | PosixPath | Path):
         self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
-        if isinstance(profiles_file, PosixPath):
+        if isinstance(profiles_file, (PosixPath, Path)):
             self.profiles_file = profiles_file
         else:
             self.profiles_file = Path(profiles_file)
