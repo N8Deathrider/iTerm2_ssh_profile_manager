@@ -58,10 +58,6 @@ class Profiles:
         if self.existing_profiles != existing_profiles:
             self.existing_profiles = existing_profiles
 
-    def debug(self):  # DEBUG
-        for k, v in vars(self).items():
-            print(f"{k}: {type(v)} = {v}")
-
     def write_profiles_data(self):
         # Writing the list of profiles data to file
         with self.profiles_file.open("w") as f:
