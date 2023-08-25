@@ -2196,3 +2196,8 @@ class Profiles:
             self.write_profiles_data()
         print(f"{name} has been added to the profile list")
 
+    def delete_profiles(self, destination_ip: str):
+        for profile in self.data["Profiles"]:
+            if get_ip_from_profile(profile) == destination_ip:
+                self.data["Profiles"].remove(profile)
+                print(f"{profile['Name']} - {destination_ip} has been deleted from the profile list")
