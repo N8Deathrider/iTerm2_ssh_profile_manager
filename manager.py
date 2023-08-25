@@ -21,6 +21,10 @@ def uuid() -> str:
     return str(uuid4()).split("-")[0]
 
 
+def get_ip_from_profile(profile: dict) -> str:
+    return profile["Command"].split("@")[-1]
+
+
 # TODO: need to add a config file to store stuff like that eventually maybe
 
 
@@ -54,7 +58,7 @@ class Profiles:
         self._get_existing_profiles()
 
     def _get_existing_profiles(self):
-        existing_profiles = {profile["Command"].split("@")[-1] for profile in self.data["Profiles"]}
+        existing_profiles = {get_ip_from_profile(profile) for profile in self.data["Profiles"]}
         if self.existing_profiles != existing_profiles:
             self.existing_profiles = existing_profiles
 
