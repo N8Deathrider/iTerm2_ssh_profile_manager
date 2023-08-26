@@ -1,53 +1,70 @@
-import json
 import unittest
+import json
+import os
+from unittest.mock import patch
 from profile_manager import Profiles
-from pathlib import Path
 
 
-class ProfilesTester(unittest.TestCase):
-
-    json_file_path = None
-    non_json_file_path = None
+class TestProfiles(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls) -> None:
-        cls.json_file_path = Path.home().joinpath("iTerm2_dynamic_profiles_test_file.json")
-        with cls.json_file_path.open("w") as fp:
-            json.dump({"Profiles": [{"Command": "/usr/bin/ssh username@127.0.0.1"}]}, fp)
-        cls.non_json_file_path = Path.home().joinpath("iTerm2_dynamic_profiles_test_file.text")
-        with cls.non_json_file_path.open("w") as _:
-            pass
+    def setUpClass(cls):
+        # Create the test_profiles.json file
+        test_data = {"Profiles": []}
+        with open("test_profiles.json", "w") as f:
+            json.dump(test_data, f)
+
+        # Create the logs directory
+        os.mkdir("logs")
+
+        # Set up the instance of Profiles needed for the tests modifying the data
+        cls.profiles = Profiles("test_profiles.json")
 
     @classmethod
-    def tearDownClass(cls) -> None:
-        pass
-        cls.json_file_path.unlink()
-        cls.non_json_file_path.unlink()
+    def tearDownClass(cls):
+        # Clean up any resources used in the tests
+        os.remove("test_profiles.json")
+        os.rmdir("logs")
 
-    def setUp(self) -> None:
-        pass
+    def test_init_existing_file(self):
+        # Test initializing with an existing JSON file
+        self.assertTrue(self.profiles.data)
 
-    def tearDown(self) -> None:
-        pass
+    def test_init_nonexistent_file(self):
+        # Test initializing with a non-existent JSON file
 
-    def test_ssh_path(self):
-        profiles_manager = Profiles(profiles_file=self.json_file_path)
-        self.assertEqual(profiles_manager._ssh_path, "/usr/bin/ssh")
+        # Simulate user input of "n" for the prompt
+        with patch("builtins.input", side_effect=["n"]):
+            with self.assertRaises(Exception):
+                Profiles("nonexistent.json")
 
-    def test_init_file_errors(self):
+    def test_init_non_file_path(self):
+        # Test initializing with a path that is not a file
         with self.assertRaises(FileNotFoundError):
-            Profiles(profiles_file="/")
+            Profiles("logs")
+
+    def test_init_non_json_extension(self):
+        # Test initializing with a file that doesn't have a .json extension
+        test_data = {"Profiles": []}
+        with open("test_profiles.txt", "w") as f:
+            json.dump(test_data, f)
 
         with self.assertRaises(TypeError):
-            Profiles(profiles_file=self.non_json_file_path)
+            Profiles("test_profiles.txt")
 
-        with self.assertRaises(Exception):
-            Profiles(profiles_file="")
+        os.remove("test_profiles.txt")
 
-    def test_get_existing_profiles(self):
-        profiles = Profiles(profiles_file=self.json_file_path)
-        self.assertSetEqual({"127.0.0.1"}, profiles.existing_profiles)
+    def test_add_profile(self):
+        # Test adding a profile
+        self.profiles.add_profile("user", "profile1", "127.0.0.1", ["tag1"], "logs")
+        self.assertEqual(len(self.profiles.data["Profiles"]), 1)
+
+    def test_delete_profiles(self):
+        # Test deleting a profile
+        self.profiles.add_profile("user", "profile2", "192.168.0.1", ["tag2"], "logs")
+        deleted_profile = self.profiles.delete_profiles("192.168.0.1")
+        self.assertEqual(deleted_profile["Name"], "profile2")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
