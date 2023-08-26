@@ -30,7 +30,29 @@ def get_ip_from_profile(profile: dict) -> str:
 
 class Profiles:
     """
-    # TODO: write this
+    A class for managing SSH profiles and related data.
+
+    This class allows you to manage SSH profiles, storing information like usernames, destination IPs, tags,
+    log directories, and more. It provides methods to add, retrieve, and write profile data.
+
+    Args:
+        profiles_file (str or PosixPath or Path): The path to the JSON file containing profiles data.
+
+    Attributes:
+        profiles_file (Path): The path to the profiles JSON file.
+        data (dict): The loaded profiles data.
+        existing_profiles (set): A set containing existing profile IPs.
+
+    Methods:
+        write_profiles_data(): Writes the list of profiles data to the JSON file.
+        add_profile(username, name, destination_ip, tags, log_directory, description=None, auto_write=True):
+            Adds a new profile to the list of profiles data.
+
+    Exceptions:
+        FileNotFoundError: Raised if the provided path is not a file.
+        TypeError: Raised if the file extension is not ".json".
+        Exception: Raised if an error occurs during file handling or validation.
+
     """
     def __init__(self, profiles_file: str | PosixPath | Path):
         self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
