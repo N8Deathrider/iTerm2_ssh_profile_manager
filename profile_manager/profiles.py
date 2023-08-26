@@ -85,6 +85,9 @@ class Profiles:
             self.existing_profiles = existing_profiles
 
     def write_profiles_data(self):
+        """
+        Writes the list of profiles data to the JSON file.
+        """
         # Writing the list of profiles data to file
         with self.profiles_file.open("w") as f:
             json.dump(self.data, f, sort_keys=True, indent=4, ensure_ascii=False)
