@@ -2242,3 +2242,4 @@ class Profiles:
             if get_ip_from_profile(profile) == destination_ip:
                 self.data["Profiles"].remove(profile)
                 print(f"{profile['Name']} - {destination_ip} has been deleted from the profile list")
+                return profile
