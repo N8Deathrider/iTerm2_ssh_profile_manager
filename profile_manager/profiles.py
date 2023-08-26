@@ -2237,7 +2237,17 @@ class Profiles:
             self.write_profiles_data()
         print(f"{name} has been added to the profile list")
 
-    def delete_profiles(self, destination_ip: str):
+    def delete_profiles(self, destination_ip: str) -> dict | None:
+        """
+        Deletes a profile with the specified destination IP address from the list of profiles data.
+
+        Args:
+            destination_ip (str): The destination IP address of the profile to be deleted.
+
+        Returns:
+            dict or None: The deleted profile dictionary if found and deleted, or None if no matching profile was found.
+
+        """
         for profile in self.data["Profiles"]:
             if get_ip_from_profile(profile) == destination_ip:
                 self.data["Profiles"].remove(profile)
