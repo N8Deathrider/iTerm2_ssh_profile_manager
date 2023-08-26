@@ -1,6 +1,6 @@
 import json
 import unittest
-from manager import Profiles
+from profile_manager import Profiles
 from pathlib import Path
 
 
