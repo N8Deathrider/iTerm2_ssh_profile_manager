@@ -34,10 +34,7 @@ class Profiles:
     """
     def __init__(self, profiles_file: str | PosixPath | Path):
         self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
-        if isinstance(profiles_file, (PosixPath, Path)):
-            self.profiles_file = profiles_file
-        else:
-            self.profiles_file = Path(profiles_file)
+        self.profiles_file = profiles_file if isinstance(profiles_file, (PosixPath, Path)) else Path(profiles_file)
 
         if self.profiles_file.exists():
             if not self.profiles_file.is_file():
