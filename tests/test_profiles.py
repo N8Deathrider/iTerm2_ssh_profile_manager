@@ -1,6 +1,6 @@
 import unittest
 import json
-import os
+from pathlib import Path
 from unittest.mock import patch
 from profile_manager import Profiles
 
@@ -11,11 +11,11 @@ class TestProfiles(unittest.TestCase):
     def setUpClass(cls):
         # Create the test_profiles.json file
         test_data = {"Profiles": []}
-        with open("test_profiles.json", "w") as f:
+        with Path("test_profiles.json").open("w") as f:
             json.dump(test_data, f)
 
         # Create the logs directory
-        os.mkdir("logs")
+        Path("logs").mkdir()
 
         # Set up the instance of Profiles needed for the tests modifying the data
         cls.profiles = Profiles("test_profiles.json")
@@ -23,8 +23,8 @@ class TestProfiles(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Clean up any resources used in the tests
-        os.remove("test_profiles.json")
-        os.rmdir("logs")
+        Path("test_profiles.json").unlink()
+        Path("logs").rmdir()
 
     def test_init_existing_file(self):
         # Test initializing with an existing JSON file
@@ -46,13 +46,13 @@ class TestProfiles(unittest.TestCase):
     def test_init_non_json_extension(self):
         # Test initializing with a file that doesn't have a .json extension
         test_data = {"Profiles": []}
-        with open("test_profiles.txt", "w") as f:
+        with Path("test_profiles.txt").open("w") as f:
             json.dump(test_data, f)
 
         with self.assertRaises(TypeError):
             Profiles("test_profiles.txt")
 
-        os.remove("test_profiles.txt")
+        Path("test_profiles.txt").unlink()
 
     def test_add_profile(self):
         # Test adding a profile
