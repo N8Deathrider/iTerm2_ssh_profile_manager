@@ -36,23 +36,30 @@ class Profiles:
     log directories, and more. It provides methods to add, retrieve, and write profile data.
 
     Args:
-        profiles_file (str or PosixPath or Path): The path to the JSON file containing profiles data.
+        profiles_file (str or PosixPath or Path):
+            The path to the JSON file containing profiles data.
 
     Attributes:
-        profiles_file (Path): The path to the profiles JSON file.
-        data (dict): The loaded profiles data.
-        existing_profiles (set): A set containing existing profile IPs.
+        profiles_file (Path):
+            The path to the profiles JSON file.
+        data (dict):
+            The loaded profiles data.
+        existing_profiles (set):
+            A set containing existing profile IPs.
 
     Methods:
-        write_profiles_data(): Writes the list of profiles data to the JSON file.
+        write_profiles_data():
+            Writes the list of profiles data to the JSON file.
         add_profile(username, name, destination_ip, tags, log_directory, description=None, auto_write=True):
             Adds a new profile to the list of profiles data.
 
     Exceptions:
-        FileNotFoundError: Raised if the provided path is not a file.
-        TypeError: Raised if the file extension is not ".json".
-        Exception: Raised if an error occurs during file handling or validation.
-
+        FileNotFoundError:
+            Raised if the provided path is not a file.
+        TypeError:
+            Raised if the file extension is not ".json".
+        Exception:
+            Raised if an error occurs during file handling or validation.
     """
     def __init__(self, profiles_file: str | PosixPath | Path):
         self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
@@ -110,18 +117,25 @@ class Profiles:
         Adds a new profile to the list of profiles data.
 
         Args:
-            username (str): The username for the SSH connection.
-            name (str): The name of the profile.
-            destination_ip (str): The destination IP address.
-            tags (list[str]): A list of tags associated with the profile.
-            log_directory (str or PosixPath or Path): The directory for log files.
-            description (str or None, optional): The description for the profile. Default is None.
+            username (str):
+                The username for the SSH connection.
+            name (str):
+                The name of the profile.
+            destination_ip (str):
+                The destination IP address.
+            tags (list[str]):
+                A list of tags associated with the profile.
+            log_directory (str or PosixPath or Path):
+                The directory for log files.
+            description (str or None, optional):
+                The description for the profile. Default is None.
                 If not specified, the description will be automatically generated as "{name} - {destination_ip}".
-            auto_write (bool, optional): Whether to automatically write the data to the profiles file. Default is True.
-                Note that using auto_write in loops calling this method is not recommended; instead, consider calling the
-                write_profiles_data method after the loop is done.
+            auto_write (bool, optional):
+                Whether to automatically write the data to the profiles file. Default is True.
+                Note that using auto_write in loops calling this method is not recommended;
+                instead, consider calling the write_profiles_data method after the loop is done.
+    """
 
-        """
         if destination_ip in self.existing_profiles:
             print(f"{name} has been skipped due to being in the profile list")
             # TODO: use rich to make a table for output that includes statuses
@@ -2242,11 +2256,12 @@ class Profiles:
         Deletes a profile with the specified destination IP address from the list of profiles data.
 
         Args:
-            destination_ip (str): The destination IP address of the profile to be deleted.
+            destination_ip (str):
+                The destination IP address of the profile to be deleted.
 
         Returns:
-            dict or None: The deleted profile dictionary if found and deleted, or None if no matching profile was found.
-
+            dict or None:
+                The deleted profile dictionary if found and deleted, or None if no matching profile was found.
         """
         for profile in self.data["Profiles"]:
             if get_ip_from_profile(profile) == destination_ip:
