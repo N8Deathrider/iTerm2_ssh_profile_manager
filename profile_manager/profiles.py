@@ -134,7 +134,7 @@ class Profiles:
                 Whether to automatically write the data to the profiles file. Default is True.
                 Note that using auto_write in loops calling this method is not recommended;
                 instead, consider calling the write_profiles_data method after the loop is done.
-    """
+        """
 
         if destination_ip in self.existing_profiles:
             print(f"{name} has been skipped due to being in the profile list")
