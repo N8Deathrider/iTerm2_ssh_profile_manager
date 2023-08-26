@@ -91,7 +91,7 @@ class Profiles:
 
         ssh_command = f"{self._ssh_path} {username}@{destination_ip}"
 
-        if not description:
+        if description is None:
             description = f"{name} - {destination_ip}"
 
         triggers = [
