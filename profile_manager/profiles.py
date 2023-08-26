@@ -99,10 +99,6 @@ class Profiles:
         with self.profiles_file.open("w") as f:
             json.dump(self.data, f, sort_keys=True, indent=4, ensure_ascii=False)
 
-        # Reading the list of profiles data again to make sure data in the class is fresh in case of auto write
-        # with self.profiles_file.open("r") as f:  # May not be needed, need to test
-        #     self.data = json.load(f)
-
     def add_profile(
             self,
             username: str,
