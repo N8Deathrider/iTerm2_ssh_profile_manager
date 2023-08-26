@@ -77,6 +77,9 @@ class Profiles:
         self._get_existing_profiles()
 
     def _get_existing_profiles(self):
+        """
+        Internal method to update the set of existing profile IPs.
+        """
         existing_profiles = {get_ip_from_profile(profile) for profile in self.data["Profiles"]}
         if self.existing_profiles != existing_profiles:
             self.existing_profiles = existing_profiles
