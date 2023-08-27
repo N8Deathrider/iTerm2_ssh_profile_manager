@@ -61,6 +61,7 @@ class TestProfiles(unittest.TestCase):
         # Test deleting a profile
         self.profiles.add_profile("user", "profile2", "192.168.0.1", ["tag2"], "logs", auto_write=False)
         deleted_profile = self.profiles.delete_profile("192.168.0.1")
+        self.assertNotIn("192.168.0.1", self.profiles.existing_profiles)
         self.assertEqual(deleted_profile["Name"], "profile2")
 
     def test_get_profile_values(self):

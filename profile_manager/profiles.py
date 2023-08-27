@@ -2264,6 +2264,7 @@ class Profiles:
             if get_ip_from_profile(profile) == destination_ip:
                 self.data["Profiles"].remove(profile)
                 print(f"{profile['Name']} - {destination_ip} has been deleted from the profile list")
+                self._get_existing_profiles()
                 return profile
 
     def get_parameters(self, profile: dict) -> tuple[str, str, str, list[str], str, str]:
