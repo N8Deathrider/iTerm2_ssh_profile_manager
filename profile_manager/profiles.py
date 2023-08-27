@@ -26,18 +26,17 @@ def get_ip_from_profile(profile: dict) -> str:
 
 
 def file_validation_handler(file: PosixPath | Path):
-    if file.suffix != ".json":
+    if file.suffix != ".json" and not file.is_dir():
         raise TypeError("The file provided does not look to be a json file")
     try:
         with file.open("r") as f:
             return json.load(f)
-    except IsADirectoryError:
-        # Raising my own error to include my message
-        raise IsADirectoryError("The file path provided seems to link to a directory and not a file")
     except FileNotFoundError:
         if Confirm.ask("This file doesn't seem to exist, would you like it to be created?", default=False):
             file.touch()
             return {"Profiles": []}
+        else:
+            raise FileNotFoundError
 
 
 # TODO: need to add a config file to store stuff like that eventually maybe

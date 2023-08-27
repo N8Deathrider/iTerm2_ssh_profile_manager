@@ -35,19 +35,17 @@ class TestProfiles(unittest.TestCase):
 
         # Simulate user input of "n" for the prompt
         with patch("builtins.input", side_effect=["n"]):
-            with self.assertRaises(Exception):
+            with self.assertRaises(FileNotFoundError):
                 Profiles("nonexistent.json")
 
     def test_init_non_file_path(self):
         # Test initializing with a path that is not a file
-        with self.assertRaises(FileNotFoundError):
+        with self.assertRaises(IsADirectoryError):
             Profiles("logs")
 
     def test_init_non_json_extension(self):
         # Test initializing with a file that doesn't have a .json extension
-        test_data = {"Profiles": []}
-        with Path("test_profiles.txt").open("w") as f:
-            json.dump(test_data, f)
+        Path("test_profiles.txt").touch()
 
         with self.assertRaises(TypeError):
             Profiles("test_profiles.txt")
