@@ -25,6 +25,21 @@ def get_ip_from_profile(profile: dict) -> str:
     return profile["Command"].split("@")[-1]
 
 
+def file_validation_handler(file: PosixPath | Path):
+    if file.suffix != ".json":
+        raise TypeError("The file provided does not look to be a json file")
+    try:
+        with file.open("r") as f:
+            return json.load(f)
+    except IsADirectoryError:
+        # Raising my own error to include my message
+        raise IsADirectoryError("The file path provided seems to link to a directory and not a file")
+    except FileNotFoundError:
+        if Confirm.ask("This file doesn't seem to exist, would you like it to be created?", default=False):
+            file.touch()
+            return {"Profiles": []}
+
+
 # TODO: need to add a config file to store stuff like that eventually maybe
 
 
@@ -65,20 +80,7 @@ class Profiles:
         self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
         self.profiles_file = profiles_file if isinstance(profiles_file, (PosixPath, Path)) else Path(profiles_file)
 
-        if self.profiles_file.exists():
-            if not self.profiles_file.is_file():
-                raise FileNotFoundError("The path provided is not a file")
-
-            if self.profiles_file.suffix != ".json":
-                raise TypeError("File does not end in .json")
-
-            with self.profiles_file.open("r") as f:
-                self.data = json.load(f)
-        elif profiles_file.endswith(".json") and Confirm.ask("This file doesn't seem to exist, would you like it to "
-                                                             "be created?", default=False):
-            self.data = {"Profiles": []}
-        else:
-            raise Exception("File Error")
+        self.data = file_validation_handler(self.profiles_file)
 
         self.existing_profiles = set()
         self._get_existing_profiles()
@@ -2264,3 +2266,7 @@ class Profiles:
                 self.data["Profiles"].remove(profile)
                 print(f"{profile['Name']} - {destination_ip} has been deleted from the profile list")
                 return profile
+
+
+# Look into making the profiles into a class that have attributes like the arguments needed for the add profile method
+# and an additional method that returns the profile as a dictionary just like how the add profile method would
