@@ -62,7 +62,7 @@ class Profiles:
             A set containing existing profile IPs.
 
     Methods:
-        write_profiles_data():
+        write_to_file():
             Writes the list of profiles data to the JSON file.
         add_profile(username, name, destination_ip, tags, log_directory, description=None, auto_write=True):
             Adds a new profile to the list of profiles data.
@@ -92,7 +92,7 @@ class Profiles:
         if self.existing_profiles != existing_profiles:
             self.existing_profiles = existing_profiles
 
-    def write_profiles_data(self):
+    def write_to_file(self):
         """
         Writes the list of profiles data to the JSON file.
         """
@@ -108,7 +108,7 @@ class Profiles:
             tags: list[str],
             log_directory: str | PosixPath | Path,  # TODO: possibly add in a default handler to use the user Documents folder
             description: str | None = None,
-            auto_write: bool = True
+            auto_write: bool = False
     ):
         """
         Adds a new profile to the list of profiles data.
@@ -130,7 +130,7 @@ class Profiles:
             auto_write (bool, optional):
                 Whether to automatically write the data to the profiles file. Default is True.
                 Note that using auto_write in loops calling this method is not recommended;
-                instead, consider calling the write_profiles_data method after the loop is done.
+                instead, consider calling the write_to_file method after the loop is done.
         """
 
         if destination_ip in self.existing_profiles:
@@ -2245,16 +2245,20 @@ class Profiles:
         self.data["Profiles"].append(profile)
         self._get_existing_profiles()
         if auto_write:
-            self.write_profiles_data()
+            self.write_to_file()
         print(f"{name} has been added to the profile list")
 
-    def delete_profile(self, destination_ip: str) -> dict | None:
+    def delete_profile(self, destination_ip: str, auto_write: bool = False) -> dict | None:
         """
         Deletes a profile with the specified destination IP address from the list of profiles data.
 
         Args:
             destination_ip (str):
                 The destination IP address of the profile to be deleted.
+            auto_write (bool, optional):
+                Whether to automatically write the data to the profiles file. Default is True.
+                Note that using auto_write in loops calling this method is not recommended;
+                instead, consider calling the write_to_file method after the loop is done.
 
         Returns:
             dict or None:
@@ -2265,6 +2269,8 @@ class Profiles:
                 self.data["Profiles"].remove(profile)
                 print(f"{profile['Name']} - {destination_ip} has been deleted from the profile list")
                 self._get_existing_profiles()
+                if auto_write:
+                    self.write_to_file()
                 return profile
 
     def get_parameters(self, profile: dict) -> tuple[str, str, str, list[str], str, str]:
