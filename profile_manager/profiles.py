@@ -2266,6 +2266,14 @@ class Profiles:
                 print(f"{profile['Name']} - {destination_ip} has been deleted from the profile list")
                 return profile
 
+    def get_parameters(self, profile: dict) -> tuple[str, str, str, list[str], str, str]:
+        username, destination_ip = profile.get("Command").split(" ")[-1].split("@")
+        name: str = profile.get("Name")
+        tags: list[str] = profile.get("Tags")
+        log_directory: str = profile.get("Log Directory")
+        description: str = profile.get("Description")
+        return username, name, destination_ip, tags, log_directory, description
+
 
 # Look into making the profiles into a class that have attributes like the arguments needed for the add profile method
 # and an additional method that returns the profile as a dictionary just like how the add profile method would

@@ -63,6 +63,15 @@ class TestProfiles(unittest.TestCase):
         deleted_profile = self.profiles.delete_profile("192.168.0.1")
         self.assertEqual(deleted_profile["Name"], "profile2")
 
+    def test_get_profile_values(self):
+        # Test getting the arguments that are needed to create a profile using the add_profile method
+        control = ("user", "profile3", "192.168.0.2", ["tag1", "tag2", "tag3"],
+                   str(Path("logs").resolve()), "description")
+        self.profiles.add_profile(*control, auto_write=False)
+        profile = self.profiles.delete_profile(control[2])
+        result = self.profiles.get_parameters(profile)
+        self.assertTupleEqual(control, result)
+
 
 if __name__ == "__main__":
     unittest.main()
