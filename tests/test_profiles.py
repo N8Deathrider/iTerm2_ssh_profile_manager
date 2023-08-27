@@ -54,13 +54,13 @@ class TestProfiles(unittest.TestCase):
 
     def test_add_profile(self):
         # Test adding a profile
-        self.profiles.add_profile("user", "profile1", "127.0.0.1", ["tag1"], "logs")
+        self.profiles.add_profile("user", "profile1", "127.0.0.1", ["tag1"], "logs", auto_write=False)
         self.assertEqual(len(self.profiles.data["Profiles"]), 1)
 
     def test_delete_profiles(self):
         # Test deleting a profile
-        self.profiles.add_profile("user", "profile2", "192.168.0.1", ["tag2"], "logs")
-        deleted_profile = self.profiles.delete_profiles("192.168.0.1")
+        self.profiles.add_profile("user", "profile2", "192.168.0.1", ["tag2"], "logs", auto_write=False)
+        deleted_profile = self.profiles.delete_profile("192.168.0.1")
         self.assertEqual(deleted_profile["Name"], "profile2")
 
 
