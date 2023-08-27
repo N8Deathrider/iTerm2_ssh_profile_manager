@@ -100,16 +100,8 @@ class Profiles:
         with self.profiles_file.open("w") as f:
             json.dump(self.data, f, sort_keys=True, indent=4, ensure_ascii=False)
 
-    def add_profile(
-            self,
-            username: str,
-            name: str,
-            destination_ip: str,
-            tags: list[str],
-            log_directory: str | PosixPath | Path,  # TODO: possibly add in a default handler to use the user Documents folder
-            description: str | None = None,
-            auto_write: bool = False
-    ):
+    def add_profile(self, username: str, name: str, destination_ip: str, tags: list[str],
+                    log_directory: str | PosixPath | Path, description: str | None = None, auto_write: bool = False):
         """
         Adds a new profile to the list of profiles data.
 
