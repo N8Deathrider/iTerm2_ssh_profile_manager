@@ -28,7 +28,20 @@ def uuid() -> str:
 
 
 def get_ip_from_profile(profile: dict) -> str:
-    return profile["Command"].split("@")[-1]
+    """
+    Extracts the IP address from the given profile dictionary.
+
+    Args:
+        profile (dict): The profile dictionary.
+
+    Returns:
+        str: The IP address extracted from the profile.
+
+    """
+    if profile.get("CustomData"):
+        return profile["CustomData"]["IP"]
+    else:
+        return profile["Command"].split("@")[-1]
 
 
 def file_validation_handler(file: PosixPath | Path):
