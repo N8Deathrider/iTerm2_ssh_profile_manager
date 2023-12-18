@@ -45,9 +45,22 @@ def get_ip_from_profile(profile: dict) -> str:
 
 
 def file_validation_handler(file: PosixPath | Path):
-    if file.suffix != ".json" and not file.is_dir():
-        raise TypeError("The file provided does not look to be a json file")
-    try:
+    """
+    Validates the file and returns its contents as a dictionary.
+
+    Args:
+        file (PosixPath | Path): The file to be validated.
+
+    Returns:
+        dict: The contents of the file as a dictionary.
+
+    Raises:
+        TypeError: If the file is not a JSON file and not a directory.
+        FileNotFoundError: If the file does not exist and the user chooses not to create it.
+    """
+    if file.suffix != ".json" and not file.is_dir():  # if the file is not a JSON file and not a directory
+        raise TypeError("The file provided does not appear to be a JSON file")
+    try:  # try to open the file and load its contents as a dictionary
         with file.open("r") as f:
             return json.load(f)
     except FileNotFoundError:  # if the file doesn't exist
@@ -56,6 +69,13 @@ def file_validation_handler(file: PosixPath | Path):
             return {"Profiles": []}
         else:  # if the user chooses not to create the file, raise the FileNotFoundError
             raise FileNotFoundError
+    except json.JSONDecodeError:  # if the file is not a valid JSON file
+        if Confirm.ask("This file doesn't seem to be a valid JSON file, would you like it to be overwritten?",
+                       default=False):
+            file.touch()
+            return {"Profiles": []}
+        else:  # if the user chooses not to overwrite the file, raise the JSONDecodeError
+            raise json.JSONDecodeError
 
 
 # TODO: need to add a config file to store stuff like that eventually maybe
