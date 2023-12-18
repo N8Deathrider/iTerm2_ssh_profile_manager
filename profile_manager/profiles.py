@@ -18,6 +18,12 @@ from uuid import uuid4
 
 
 def uuid() -> str:
+    """
+    Generate a unique identifier.
+
+    Returns:
+        str: A string representing the unique identifier.
+    """
     return str(uuid4()).split("-")[0]
 
 
@@ -31,11 +37,11 @@ def file_validation_handler(file: PosixPath | Path):
     try:
         with file.open("r") as f:
             return json.load(f)
-    except FileNotFoundError:
+    except FileNotFoundError:  # if the file doesn't exist
         if Confirm.ask("This file doesn't seem to exist, would you like it to be created?", default=False):
             file.touch()
             return {"Profiles": []}
-        else:
+        else:  # if the user chooses not to create the file, raise the FileNotFoundError
             raise FileNotFoundError
 
 
@@ -76,13 +82,20 @@ class Profiles:
             Raised if an error occurs during file handling or validation.
     """
     def __init__(self, profiles_file: str | PosixPath | Path):
-        self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
-        self.profiles_file = profiles_file if isinstance(profiles_file, (PosixPath, Path)) else Path(profiles_file)
+            """
+            Initializes an instance of the Profiles class.
 
-        self.data = file_validation_handler(self.profiles_file)
+            Args:
+                profiles_file (str | PosixPath | Path): The absolute path to the profiles file.
 
-        self.existing_profiles = set()
-        self._get_existing_profiles()
+            """
+            self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
+            self.profiles_file = profiles_file if isinstance(profiles_file, (PosixPath, Path)) else Path(profiles_file)
+
+            self.data = file_validation_handler(self.profiles_file)
+
+            self.existing_profiles = set()
+            self._get_existing_profiles()
 
     def _get_existing_profiles(self):
         """
@@ -124,6 +137,7 @@ class Profiles:
                 Note that using auto_write in loops calling this method is not recommended;
                 instead, consider calling the write_to_file method after the loop is done.
         """
+        # TODO: possibly add in a default handler to use the user Documents folder
 
         if destination_ip in self.existing_profiles:
             print(f"{name} has been skipped due to being in the profile list")
@@ -133,7 +147,7 @@ class Profiles:
         if isinstance(log_directory, str):
             log_directory = Path(log_directory)
 
-        if not log_directory.is_dir():
+        if not log_directory.is_dir():  # TODO: figure out if the dir doesn't exist and if not, make it
             raise Exception("Log directory is not a directory ")
 
         ssh_command = f"{self._ssh_path} {username}@{destination_ip}"
@@ -141,6 +155,7 @@ class Profiles:
         if description is None:
             description = f"{name} - {destination_ip}"
 
+        # The parameters in the trigger list are base64 encoded plists.
         triggers = [
             {
                 "action": "HighlightTrigger",
@@ -2328,12 +2343,27 @@ class Profiles:
                 return profile
 
     def get_parameters(self, profile: dict) -> tuple[str, str, str, list[str], str, str]:
-        username, destination_ip = profile.get("Command").split(" ")[-1].split("@")
-        name: str = profile.get("Name")
-        tags: list[str] = profile.get("Tags")
-        log_directory: str = profile.get("Log Directory")
-        description: str = profile.get("Description")
-        return username, name, destination_ip, tags, log_directory, description
+            """
+            Extracts parameters from the given profile dictionary.
+
+            Args:
+                profile (dict): The profile dictionary.
+
+            Returns:
+                tuple[str, str, str, list[str], str, str]: A tuple containing the extracted parameters:
+                    - username (str): The username extracted from the profile's "Command" field.
+                    - name (str): The name extracted from the profile's "Name" field.
+                    - destination_ip (str): The destination IP extracted from the profile's "Command" field.
+                    - tags (list[str]): The tags extracted from the profile's "Tags" field.
+                    - log_directory (str): The log directory extracted from the profile's "Log Directory" field.
+                    - description (str): The description extracted from the profile's "Description" field.
+            """
+            username, destination_ip = profile.get("Command").split(" ")[-1].split("@")
+            name: str = profile.get("Name")
+            tags: list[str] = profile.get("Tags")
+            log_directory: str = profile.get("Log Directory")
+            description: str = profile.get("Description")
+            return username, name, destination_ip, tags, log_directory, description
 
 
 # Look into making the profiles into a class that have attributes like the arguments needed for the add profile method
