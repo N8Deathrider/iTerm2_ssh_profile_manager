@@ -11,7 +11,7 @@ from pathlib import Path
 
 from shutil import which
 
-from rich import print
+from rich import print as rprint
 from rich.prompt import Confirm
 from rich.prompt import Prompt
 from uuid import uuid4
@@ -65,14 +65,16 @@ def file_validation_handler(file: PosixPath | Path):
             return json.load(f)
     except FileNotFoundError:  # if the file doesn't exist
         if Confirm.ask("This file doesn't seem to exist, would you like it to be created?", default=False):
-            file.touch()
+            with file.open("w") as f:
+                json.dump({"Profiles": []}, f, sort_keys=True, indent=4, ensure_ascii=False)
             return {"Profiles": []}
         else:  # if the user chooses not to create the file, raise the FileNotFoundError
             raise FileNotFoundError
     except json.JSONDecodeError:  # if the file is not a valid JSON file
         if Confirm.ask("This file doesn't seem to be a valid JSON file, would you like it to be overwritten?",
                        default=False):
-            file.touch()
+            with file.open("w") as f:
+                json.dump({"Profiles": []}, f, sort_keys=True, indent=4, ensure_ascii=False)
             return {"Profiles": []}
         else:  # if the user chooses not to overwrite the file, raise the JSONDecodeError
             raise json.JSONDecodeError
