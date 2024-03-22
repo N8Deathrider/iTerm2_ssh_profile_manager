@@ -1922,6 +1922,66 @@ class Profiles:
                 }
             },  # Linksprinter
             {
+                "class": "iTermStatusBarActionComponent",
+                "configuration": {
+                    "knobs": {
+                        "action": {
+                            "action": 12,
+                            "parameter": "test cable-diagnostics tdr interface ",
+                            "title": "Start Cable test",
+                            "version": 0
+                        },
+                        "base: compression resistance": 1,
+                        "base: priority": 5,
+                        "maxwidth": 1.7976931348623157e+308,
+                        "minwidth": "0",
+                        "shared text color": {
+                            "Alpha Component": 1,
+                            "Blue Component": 0.9,
+                            "Color Space": "sRGB",
+                            "Green Component": 0.7272,
+                            "Red Component": 0.63
+                        }
+                    },
+                    "layout advanced configuration dictionary value": {
+                        "algorithm": 1,
+                        "auto-rainbow style": 1,
+                        "font": ".AppleSystemUIFont 12",
+                        "remove empty components": False
+                    }
+                }
+            },  # Start Cable Test
+            {
+                "class": "iTermStatusBarActionComponent",
+                "configuration": {
+                    "knobs": {
+                        "action": {
+                            "action": 12,
+                            "parameter": "show cable-diagnostics tdr interface ",
+                            "title": "View Cable Test",
+                            "version": 0
+                        },
+                        "base: compression resistance": 1,
+                        "base: priority": 5,
+                        "maxwidth": 1.7976931348623157e+308,
+                        "minwidth": "0",
+                        "shared text color": {
+                            "Alpha Component": 1,
+                            "Blue Component": 0.9,
+                            "Color Space": "sRGB",
+                            "Green Component": 0.63,
+                            "Red Component": 0.6966000000000001
+                        }
+                    },
+                    "layout advanced configuration dictionary value": {
+                        "algorithm": 1,
+                        "auto-rainbow style": 1,
+                        "font": ".AppleSystemUIFont 12",
+                        "remove empty components": False
+                    }
+                }
+            },  # View Cable Test
+            {
                 "class": "iTermStatusBarSpringComponent",
                 "configuration": {
                     "knobs": {
