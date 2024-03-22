@@ -929,7 +929,7 @@ class Profiles:
                 "parameter": "{YnBsaXN0MDDUAQIDBAUGBwxYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRB"
                              "cmNoaXZlctIICQoLVU5TUkdCXE5TQ29sb3JTcGFjZU8QJzAuNjg2Mjc0NTA5OCAwLjIyMzUyOTQxMTggMC45MzMzM"
                              "zMzMzMzABABoQ1VJG51bGwIERokKTI3SU5UYYuNjwAAAAAAAAEBAAAAAAAAAA4AAAAAAAAAAAAAAAAAAACV,}",
-                "regex": "\\b(Po|Port-channel)\\d{1,3}\\b"
+                "regex": "\\b(Po|Port-channel)\\d{1,4}\\b"
             },  # Port-channel interface highlighter
             {
                 "action": "HighlightTrigger",
@@ -1001,7 +1001,7 @@ class Profiles:
                 "parameter": "{YnBsaXN0MDDUAQIDBAUGBwxYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRB"
                              "cmNoaXZlctIICQoLVU5TUkdCXE5TQ29sb3JTcGFjZUowIDAuNiAwLjQAEAGhDVUkbnVsbAgRGiQpMjdJTlRhbG5wA"
                              "AAAAAAAAQEAAAAAAAAADgAAAAAAAAAAAAAAAAAAAHY=,}",
-                "regex": "\\b(Vl|Vlan)\\d+\\b"
+                "regex": "\\b(Vl|Vlan)\\d{1,4}\\b"
             },  # Vlan interface highlighter
             {
                 "action": "HighlightTrigger",
