@@ -1700,7 +1700,7 @@ class Profiles:
             }   # Interface is up highlighter
         ]
 
-        status_bar_componets = [
+        status_bar_components = [
             {
                 "class": "iTermStatusBarActionComponent",
                 "configuration": {
@@ -2287,7 +2287,7 @@ class Profiles:
                     "font": ".AppleSystemUIFont 12",
                     "remove empty components": False
                 },
-                "components": status_bar_componets
+                "components": status_bar_components
             },
             "Triggers": triggers,
             "ASCII Anti Aliased": True,
