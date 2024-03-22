@@ -117,20 +117,20 @@ class Profiles:
             Raised if an error occurs during file handling or validation.
     """
     def __init__(self, profiles_file: str | PosixPath | Path):
-            """
-            Initializes an instance of the Profiles class.
+        """
+        Initializes an instance of the Profiles class.
 
-            Args:
-                profiles_file (str | PosixPath | Path): The absolute path to the profiles file.
+        Args:
+            profiles_file (str | PosixPath | Path): The absolute path to the profiles file.
 
-            """
-            self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
-            self.profiles_file = profiles_file if isinstance(profiles_file, (PosixPath, Path)) else Path(profiles_file)
+        """
+        self._ssh_path = which("ssh") or Prompt.ask("What's the absolute path to ssh")
+        self.profiles_file = profiles_file if isinstance(profiles_file, (PosixPath, Path)) else Path(profiles_file)
 
-            self.data = file_validation_handler(self.profiles_file)
+        self.data = file_validation_handler(self.profiles_file)
 
-            self.existing_profiles = set()
-            self._get_existing_profiles()
+        self.existing_profiles = set()
+        self._get_existing_profiles()
 
     def _get_existing_profiles(self):
         """
