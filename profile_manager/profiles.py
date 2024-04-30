@@ -1,20 +1,42 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Created by: Sp8ns5982
+This module contains the implementation of SSH profile management.
 
-Email: Nath001c@KelloggsUwU.net
-
+Written by: Nathan Cable
 """
+
+
+# Standard libraries
+import logging
 import json
-
 from pathlib import PosixPath
 from pathlib import Path
-
 from shutil import which
+from sys import exit
+from uuid import uuid4
 
+# Third-party libraries
 from rich import print as rprint
 from rich.prompt import Confirm
 from rich.prompt import Prompt
-from uuid import uuid4
+from rich.logging import RichHandler
+
+# Local libraries
+
+
+# Standard exit codes
+EXIT_SUCCESS = 0  # No errors
+EXIT_GENERAL_ERROR = 1  # General error
+EXIT_INVALID_ARGUMENT = 120  # Invalid argument to exit
+EXIT_KEYBOARD_INTERRUPT = 130  # Keyboard interrupt (Ctrl+C)
+
+
+# Logging setup
+logging.basicConfig(
+    level=logging.INFO, format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
+)
+log: logging.Logger = logging.getLogger("rich")
 
 
 def uuid() -> str:
@@ -191,6 +213,8 @@ class Profiles:
             description = f"{name} - {destination_ip}"
 
         # The parameters in the trigger list are base64 encoded plists.
+        # TODO: add a highlight for Ethernet1/33 aka Eth1/33, look at r1-clin for examples
+        # TODO: add a highlight for loopback0 aka lo0, look at r1-clin for examples
         triggers = [
             {
                 "action": "HighlightTrigger",
@@ -2410,7 +2434,7 @@ class Profiles:
         self._get_existing_profiles()
         if auto_write:
             self.write_to_file()
-        print(f"{name} has been added to the profile list")
+        print(f"{destination_ip} - {name} has been added to the profile list")
 
     def delete_profile(self, destination_ip: str, auto_write: bool = False) -> dict | None:
         """
