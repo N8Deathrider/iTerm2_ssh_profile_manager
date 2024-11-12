@@ -1604,7 +1604,7 @@ class Profiles:
                              "/eK+Bn4qPk4+cf6V/rn+3f8B/yY/Sn9uv5L/tz/bf//0hscHR5aJGNsYXNzbmFtZVgkY2xhc3Nlc1xOU0NvbG9yU3"
                              "BhY2WiHyBcTlNDb2xvclNwYWNlWE5TT2JqZWN0AAgAEQAaACQAKQAyADcASQBSAF8AZQByAIcAjwCvALEAswC4AL4"
                              "AxQDKANAA1wDZANsA3Q0pDS4NOQ1CDU8NUg1fAAAAAAAAAgEAAAAAAAAAIQAAAAAAAAAAAAAAAAAADWg=,}",
-                "regex": r"((?<=is\s)down|notconnect|disabled(?=\s{3})|(?<=\()notconnect|disabled(?=\)))"
+                "regex": r"((?<=is\s)administratively down|down|notconnect|disabled(?=\s{3})|(?<=\()notconnect|disabled(?=\)))"
             },  # Interface is down highlighter
             {
                 "action": "HighlightTrigger",
