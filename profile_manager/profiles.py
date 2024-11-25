@@ -1662,7 +1662,7 @@ class Profiles:
                              "NzbmFtZVgkY2xhc3Nlc1xOU0NvbG9yU3BhY2WiHyBcTlNDb2xvclNwYWNlWE5TT2JqZWN0AAgAEQAaACQAKQAyADc"
                              "ASQBSAF8AZQByAIcAnADHAMkAywDQANYA3QDiAOgA7wDxAPMA9Q1BDUYNUQ1aDWcNag13AAAAAAAAAgEAAAAAAAAA"
                              "IQAAAAAAAAAAAAAAAAAADYA=,}",
-                "regex": "((?<=is\\s)up|connected(?=\\s{4})|(?<=\\()connected(?=\\)))"
+                "regex": r"((?<=is\s)up|connected(?=\s{4})|(?<=\()connected(?=\))|(?<=to\s)up)"
             }   # Interface is up highlighter
         ]
 
